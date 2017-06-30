@@ -1,4 +1,9 @@
 require 'gosu'
+require_relative 'defstruct'
+
+GameState = DefStruct.new{{
+	scroll_x: 0,
+}}
 
 class GameWindow < Gosu::Window
 	def initialize(*args)
@@ -7,20 +12,20 @@ class GameWindow < Gosu::Window
 			background: Gosu::Image.new(self, 'images/background.png', false),
 		  foreground: Gosu::Image.new(self, 'images/foreground.png', true),
 		}
-		@scroll_x = 0
+		@state = GameState.new
 	end
 
 	def update
-		@scroll_x += 3
-		if @scroll_x > @images[:foreground].width
-			@scroll_x = 0
+		@state.scroll_x += 3
+		if @state.scroll_x > @images[:foreground].width
+			@state.scroll_x = 0
 		end
 	end
 
 	def draw
 		@images[:background].draw(0, 0, 0)
-		@images[:foreground].draw(-@scroll_x, 0, 0)
-		@images[:foreground].draw(-@scroll_x + @images[:foreground].width, 0, 0)
+		@images[:foreground].draw(-@state.scroll_x, 0, 0)
+		@images[:foreground].draw(-@state.scroll_x + @images[:foreground].width, 0, 0)
 	end
 end
 
